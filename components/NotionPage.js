@@ -31,7 +31,7 @@ const NotionPage = ({ post, className }) => {
   // 页面首次打开时执行的勾子
   useEffect(() => {
     // 检测当前的url并自动滚动到对应目标
-    autoScrollToTarget()
+    autoScrollToHash()
   }, [])
 
   // 页面文章发生变化时会执行的勾子
@@ -144,14 +144,16 @@ const processGalleryImg = zoom => {
 }
 
 /**
- * 根据url参数自动滚动到指定区域
+ * 根据url参数自动滚动到锚位置
  */
-const autoScrollToTarget = () => {
+const autoScrollToHash = () => {
   setTimeout(() => {
     // 跳转到指定标题
-    const needToJumpToTitle = window.location.hash
+    const hash = window?.location?.hash
+    const needToJumpToTitle = hash && hash > 0
     if (needToJumpToTitle) {
-      const tocNode = document.getElementById(window.location.hash.substring(1))
+      console.log('jump to hash', hash)
+      const tocNode = document.getElementById(hash.substring(1))
       if (tocNode && tocNode?.className?.indexOf('notion') > -1) {
         tocNode.scrollIntoView({ block: 'start', behavior: 'smooth' })
       }
